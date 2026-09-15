@@ -135,6 +135,23 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0) {
         return make_shared<uint16_t>(rpn_stack.back());
 }
 
+    if (cmd == cmd_and) {
+        if (rpn_stack.size() < 2) {
+            return nullptr;
+        }
+
+        uint16_t b = rpn_stack.back();
+        rpn_stack.pop_back();
+
+        uint16_t a = rpn_stack.back();
+        rpn_stack.pop_back();
+
+        uint16_t result = a & b;
+        rpn_stack.push_back(result);
+
+        return make_shared<uint16_t>(rpn_stack.back());
+}
+
 return nullptr;
 }
 
