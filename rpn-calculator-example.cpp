@@ -84,6 +84,23 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0) {
     return make_shared<uint16_t>(rpn_stack.back());
 }  
 
+    if (cmd == cmd_left_shift) {
+        if (rpn_stack.size() < 2) {
+            return nullptr;
+     }
+
+        uint16_t shift = rpn_stack.back();
+         rpn_stack.pop_back();
+
+        uint16_t number = rpn_stack.back();
+        rpn_stack.pop_back();
+
+        uint16_t result = number << shift;
+        rpn_stack.push_back(result);
+
+    return make_shared<uint16_t>(rpn_stack.back());
+}
+
 return nullptr;
 }
 
