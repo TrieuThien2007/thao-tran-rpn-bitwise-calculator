@@ -153,25 +153,32 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0) {
 }
 
     if (cmd == cmd_add) {
-         if (rpn_stack.size() < 2) {
+        if (rpn_stack.size() < 2) {
             return nullptr;
         }
 
         uint16_t b = rpn_stack.back();
-        rpn_stack.pop_back();
+        uint16_t a = rpn_stack[rpn_stack.size() - 2];
 
-        uint16_t a = rpn_stack.back();
-        rpn_stack.pop_back();
+        uint16_t x = a;
+        uint16_t y = b;
 
-        while (b != 0) {
-        uint16_t carry = (a & b) << 1;
-        a = a ^ b;
-        b = carry;
+        while (y != 0) {
+        uint16_t carry = x & y;
+
+        if (carry & 0x8000) {
+            return nullptr;
+        }
+
+        x = x ^ y;
+        y = carry << 1;
     }
 
-        rpn_stack.push_back(a);
+    rpn_stack.pop_back();
+    rpn_stack.pop_back();
+    rpn_stack.push_back(x);
 
-        return make_shared<uint16_t>(rpn_stack.back());
+    return make_shared<uint16_t>(rpn_stack.back());
 }
 
 return nullptr;
