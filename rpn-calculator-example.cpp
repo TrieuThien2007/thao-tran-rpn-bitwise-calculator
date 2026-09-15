@@ -73,6 +73,14 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0) {
         return nullptr;
     }
 
+        return make_shared<uint16_t>(rpn_stack.back());
+} 
+
+    if (cmd == cmd_top) {
+        if (rpn_stack.empty()) {
+            return nullptr;
+        }
+
     return make_shared<uint16_t>(rpn_stack.back());
 }  
 
